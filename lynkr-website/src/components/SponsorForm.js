@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SponsorForm.css'; // Import CSS for styling
 import emailjs from 'emailjs-com';
+import axios from 'axios';
 
 function SponsorForm() {
 
@@ -29,22 +30,44 @@ function SponsorForm() {
   };
   
   
-  const handleSubmit = (e) => {
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    const xanoURL = 'https://x8ki-letl-twmt.n7.xano.io/api:E0kSkxT4/lynkr_request_form_data'; //Change to database
 
     const serviceID = 'service_i9qog1p';
     const templateID = 'template_brcvw1b';
     const publicKey = 'hmRrxY-b1RSuLWjR-';
 
-    emailjs.send(serviceID, templateID, formData, publicKey)
-      .then((result) => {
-        console.log('Email sent successfully!', result.text);
-        navigate('/thank-you'); // Navigate to ThankYou page on success
-      })
-      .catch((error) => {
-        console.error('Failed to send email:', error);
-        alert('There was an issue sending your form. Please try again.');
+    try {
+      // Send form data to Xano using Axios
+      const xanoResponse = await axios.post(xanoURL, formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+
+      if (xanoResponse.status === 200) {
+        console.log('Form data successfully submitted to Xano');
+      } else {
+        console.error('Failed to submit form data to Xano');
+        alert('There was an issue submitting your form data to the database.');
+        return; // Exit if Xano submission fails
+      }
+
+      // Send form data via EmailJS
+      await emailjs.send(serviceID, templateID, formData, publicKey);
+      console.log('Email sent successfully!');
+      // Navigate to Thank You page
+      navigate('/thank-you');
+    } catch (error) {
+      console.error('An error occurred:', error);
+      alert('An error occurred while submitting the form. Please try again.');
+    } finally {
+      setIsLoading(false); // Turn off the loading indicator
+    }
   };
 
   return (
@@ -104,7 +127,9 @@ function SponsorForm() {
             </select>
           </div>
 
-          <button type="submit" className="submit-button">Submit</button>
+          <button type="submit" className="submit-button" disabled={isLoading}>
+        {isLoading ? 'Submitting...' : 'Submit'}
+</button>
         </form>
       </div>
     </div>
