@@ -1,29 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SponsorForm.css'; // Import CSS for styling
+import emailjs from 'emailjs-com';
 
 function SponsorForm() {
-  const navigate = useNavigate(); // Hook to navigate between routes
 
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+      companyName: '',
+      requirements: '',
+      contactEmail: '',
+      attendance: '',
+      brandActivation: '',
+      restrictions: '',
+      marketingMaterials: '',
+      daysToShip: '',
+      photoVideoStyle: '',
+      photosRequired: '',
+      videosRequired: ''
+    }); // Hook to navigate between routes
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+  
+  
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent page refresh
-    navigate('/thank-you'); // Redirect to the ThankYou page
+    e.preventDefault();
+
+    const serviceID = 'service_i9qog1p';
+    const templateID = 'template_brcvw1b';
+    const publicKey = 'hmRrxY-b1RSuLWjR-';
+
+    emailjs.send(serviceID, templateID, formData, publicKey)
+      .then((result) => {
+        console.log('Email sent successfully!', result.text);
+        alert('Your form has been submitted successfully!');
+        navigate('/thank-you'); // Navigate to ThankYou page on success
+      })
+      .catch((error) => {
+        console.error('Failed to send email:', error);
+        alert('There was an issue sending your form. Please try again.');
+      });
   };
 
   return (
-    <div className="background">  {/* This div will apply the pink background */}
+    <div className="background">
       <div className="form-container">
-      <h1 style={{ paddingTop: '2rem' }}>Want to Sponsor a University Event through Lynkr?</h1>
-        {/* Add onSubmit event to the <form> */}
+        <h1 style={{ paddingTop: '2rem' }}>Want to Sponsor a University Event through Lynkr?</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <input type="text" placeholder="Company Name" required />
-            <input type="text" placeholder="What do you require in return?" required />
+            <input type="text" name="companyName" placeholder="Company Name" value={formData.companyName} onChange={handleChange} required />
+            <input type="text" name="requirements" placeholder="What do you require in return?" value={formData.requirements} onChange={handleChange} required />
           </div>
 
           <div className="form-group">
-            <input type="email" placeholder="Contact Email" required />
-            <select required>
+            <input type="email" name="contactEmail" placeholder="Contact Email" value={formData.contactEmail} onChange={handleChange} required />
+            <select name="attendance" value={formData.attendance} onChange={handleChange} required>
               <option value=""># people in attendance</option>
               <option value="5">5</option>
               <option value="10">10</option>
@@ -33,13 +70,13 @@ function SponsorForm() {
           </div>
 
           <div className="form-group">
-            <input type="text" placeholder="Describe your Ideal Brand Activation:" />
-            <input type="text" placeholder="Any organizations you don’t want to sponsor?" />
+            <input type="text" name="brandActivation" placeholder="Describe your Ideal Brand Activation" value={formData.brandActivation} onChange={handleChange} />
+            <input type="text" name="restrictions" placeholder="Any organizations you don’t want to sponsor?" value={formData.restrictions} onChange={handleChange} />
           </div>
 
           <div className="form-group">
-            <input type="text" placeholder="Will you be shipping marketing materials?" />
-            <select required>
+            <input type="text" name="marketingMaterials" placeholder="Will you be shipping marketing materials?" value={formData.marketingMaterials} onChange={handleChange} />
+            <select name="daysToShip" value={formData.daysToShip} onChange={handleChange} required>
               <option value=""># days before to ship marketing materials</option>
               <option value="1">1</option>
               <option value="7+">7+</option>
@@ -48,18 +85,18 @@ function SponsorForm() {
           </div>
 
           <div className="form-group">
-            <input type="text" placeholder="Describe the Style of Photos and Videos you Require:" />
+            <input type="text" name="photoVideoStyle" placeholder="Describe the Style of Photos and Videos you Require" value={formData.photoVideoStyle} onChange={handleChange} />
           </div>
 
           <div className="form-group">
-            <select required>
+            <select name="photosRequired" value={formData.photosRequired} onChange={handleChange} required>
               <option value=""># photos required</option>
               <option value="1">1</option>
               <option value="3">3</option>
               <option value="5">5</option>
               <option value="10+">10+</option>
             </select>
-            <select required>
+            <select name="videosRequired" value={formData.videosRequired} onChange={handleChange} required>
               <option value=""># videos required</option>
               <option value="1">1</option>
               <option value="3">3</option>
