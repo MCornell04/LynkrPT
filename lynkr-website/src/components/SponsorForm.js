@@ -39,7 +39,6 @@ function SponsorForm() {
     emailjs.send(serviceID, templateID, formData, publicKey)
       .then((result) => {
         console.log('Email sent successfully!', result.text);
-        alert('Your form has been submitted successfully!');
         navigate('/thank-you'); // Navigate to ThankYou page on success
       })
       .catch((error) => {
