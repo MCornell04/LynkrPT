@@ -129,7 +129,7 @@ function SponsorForm() {
 
           <button type="submit" className="submit-button" disabled={isLoading}>
         {isLoading ? 'Submitting...' : 'Submit'}
-</button>
+          </button>
         </form>
       </div>
     </div>
