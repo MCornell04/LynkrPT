@@ -46,6 +46,12 @@ function SponsorForm() {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   const togglePhotosDropdown = () => setShowPhotosDropdown(!showPhotosDropdown);
   const toggleVideosDropdown = () => setShowVideosDropdown(!showVideosDropdown);
   const toggleAdditionalMarketingMaterials = () => setShowMarketing(!showMarketing);
@@ -81,7 +87,7 @@ function SponsorForm() {
             <div className="form-group">
               <div>
                 <label htmlFor="companyName">Company Name</label>
-                <input type="text" id="companyName" name="companyName" placeholder="Company Name" value={formData.companyName} onChange={handleChange} required />
+                <input type="text" id="companyName" name="companyName" placeholder="Company Name" value={formData.companyName} onChange={handleChange} onKeyDown={handleKeyDown} required />
               </div>
               <div>
                 <label htmlFor="contactEmail">Contact Email</label>
@@ -97,7 +103,7 @@ function SponsorForm() {
             <div className="form-group">
               <div>
                 <label htmlFor="brandActivation">What does your Ideal Brand Activation Look Like?</label>
-                <input type="text" name="brandActivation" placeholder="Describe your Ideal Brand Activation:" value={formData.brandActivation} onChange={handleChange} required/>
+                <input type="text" name="brandActivation" placeholder="Describe your Ideal Brand Activation:" value={formData.brandActivation} onChange={handleChange} onKeyDown={handleKeyDown} required/>
               </div>
             </div>
           )}
@@ -105,7 +111,7 @@ function SponsorForm() {
             <div className="form-group">
               <div>
                 <label htmlFor="exclusions">Are there Any Organizations you don't want to Sponsor?</label>
-                <input type="text" name="exclusions" placeholder="ex: Greek Life, Professional, etc. N/A if none" value={formData.exclusions} onChange={handleChange} required/>
+                <input type="text" name="exclusions" placeholder="ex: Greek Life, Professional, etc. N/A if none" value={formData.exclusions} onChange={handleChange} onKeyDown={handleKeyDown} required/>
               </div>
               
             </div>
@@ -126,12 +132,12 @@ function SponsorForm() {
                 <label>How much Product will you send for X number of People?</label>
                 <label className="example">ex: We will send 2 cases of product for every 20 people in attendance.</label>
                 <label>For every X number of people,</label>
-                <input type="text" name="numberOfPeople" placeholder="5, 25, 50 people" value={formData.numberOfPeople} onChange={handleChange} required/>
+                <input type="text" name="numberOfPeople" placeholder="5, 25, 50 people" value={formData.numberOfPeople} onChange={handleChange} onKeyDown={handleKeyDown} required/>
                 
               </div>
               <div>
                 <label>we will send Y of Product.</label>
-                <input type="text" name="amountOfProduct" placeholder="please specify: 1 case, 5 boxes, 2 pallets, etc" value={formData.amountOfProduct} onChange={handleChange} required/>
+                <input type="text" name="amountOfProduct" placeholder="please specify: 1 case, 5 boxes, 2 pallets, etc" value={formData.amountOfProduct} onChange={handleChange} onKeyDown={handleKeyDown} required/>
               </div>
               
             </div>
@@ -178,6 +184,7 @@ function SponsorForm() {
                   placeholder="ex: logos facing camera, people engaged in activities"
                   value={formData.mediaStyle}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
             </div>
@@ -193,6 +200,7 @@ function SponsorForm() {
                   placeholder="please enter a number:"
                   value={formData.shippingNoticeNumber}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
                 />
                 <select name="shippingNoticePeriod" value={formData.shippingNoticePeriod} onChange={handleChange}>
                     <option value="" disabled>period of time</option>
@@ -215,6 +223,7 @@ function SponsorForm() {
                   placeholder="ex: merch, banners, flags"
                   value={formData.additionalMaterials}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
                 />
                 )}
               </div>
